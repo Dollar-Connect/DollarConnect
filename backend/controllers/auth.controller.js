@@ -26,8 +26,19 @@ export const signup =async(req,res)=>{
       username,
     })
     await user.save();
+
+    const token = jwt.sign( { userId:user._id }, process.env.JWT_SECRET, {expiresIn:"3d"} )
+    res.cookie("jwt-DollarConnect", token,{
+      httpOnly:true,
+      maxAge:3*24*60*60*1000,
+      sameSite:"strict",
+      secure: process.env.NODE_ENV ==="production",
+    })
+    res.status(201).json({ message:"User registered successfully"})
+    //todo:send welcome email   
   } catch (error) {
-    
+    console.log("Error in Signup: ", error.message);
+    res.status(500).json({ message: "Internal Server Error"})
   }
 }
 
