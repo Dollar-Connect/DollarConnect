@@ -7,4 +7,9 @@ const TOKEN = process.env.MAILTRAP_TOKEN
 
 export const MailtrapClient = new MailtrapClient({
   token: TOKEN
-});
+})
+
+export const sender={
+  email:process.env.EMAIL_FROM,
+  name:EMAIL_FROM_NAME,
+}
