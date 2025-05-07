@@ -41,7 +41,7 @@ export const signup =async(req,res)=>{
     res.status(201).json({ message:"User registered successfully"})
     //todo:send welcome email 
 
-    const ProfileUrl="http://localhost:8000/Profile/"+user.username
+    const ProfileUrl= process.env.CLIENT_URL+"/Profile/"+user.username
 
     try {
       await SendWelcomeEmail(user.email,user.name,ProfileUrl)
