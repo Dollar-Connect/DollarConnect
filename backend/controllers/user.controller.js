@@ -19,3 +19,16 @@ export const getSuggestedConnections = async(req,res) =>{
     res.status(500).json({message:"Server error"});
   }
 }
+
+export const getPublicProfile = async(req,res) =>{
+  try {
+    const user = await User.findOne({ username: req.params.username }).select("-password");
+
+    if(!user){
+      return res.status(401).json({message:"User not found"});
+    }
+  } catch (error) {
+    console.error("Error in getPublicProfile Contoller", error);
+    res.status(500).json({message:"Server Error"});
+  }
+}
