@@ -1,3 +1,4 @@
+import cloudinary from "../lib/cloudinary.js";
 import User from "../models/user.model.js"
 
 export const getSuggestedConnections = async(req,res) =>{
@@ -53,6 +54,16 @@ export const updateProfile = async(req,res) =>{
       if(req.body[field]){
         updatedData[field] = req.body[field];
       }
+    }
+
+    if(req.body.profilePicture){
+      const result = await cloudinary.uploader.upload(req.body.profilePicture);
+      uploadedData.profilePicture = result.secure_url;
+    }
+
+    if(req.body.bannerImg){
+      const result = await cloudinary.uploader.upload(req.body.bannerImg);
+      uploadedData.bannerImg = result.secure_url;
     }
 
     const user = await User.findByIdAndUpdate(req.user._id, {$set: updatedData}, {new: true}).select("-password");
