@@ -4,6 +4,7 @@ dotenv.config();
 import express from "express";
 import authRoutes from "./routes/auth.route.js";
 import userRoutes from "./routes/user.route.js";
+import postRoutes from "./routes/post.route.js";
 import {connectdb} from "./lib/db.js";
 import cookieParser from "cookie-parser";
 
@@ -15,6 +16,7 @@ app.use(cookieParser());
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/post", postRoutes);
 
 app.listen(PORT,()=>{
   console.log(`Server running :${PORT}`);
