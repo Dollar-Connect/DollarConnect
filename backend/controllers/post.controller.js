@@ -70,3 +70,18 @@ export const deletePosts = async (req,res) =>{
   res.status(500).json({message:"Server Error"})
  }
 }
+
+export const getPostById = async (req,res) =>{
+  try {
+    const postID = req.params.id;
+    
+    const post = await Post.findById(postID)
+    .populate("author","name username profilePicture headline")
+    .populate("comment.user","name username profilePicture headline");
+
+    res.status(200).json(post);
+  } catch (error) {
+    console.error("Error in getPostById conntroller", error);
+    res.status(500).json({message:"Server Error"});
+  }
+}
