@@ -123,3 +123,25 @@ export const createComments = async (req,res) =>{
     res.status(500).json({message:"Server Error"});
   }
 }
+
+export const likePost = async (req,res) =>{
+  try {
+    const postID = req.params.id;
+    const post = await Post.findById(postID);
+    const userID = req.user._id;
+
+    if (post.likes.includes(userID)) {
+      post.likes = post.likes.filter(id => id.toString() !== userID.toString());//unlike
+    } else {
+      post.likes.push(userID)
+
+      if(post.author.toString() !== userID.toString()){
+        const newNotification = new Notification({
+          
+        })
+      }
+    }
+  } catch (error) {
+    
+  }
+}
