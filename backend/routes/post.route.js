@@ -8,6 +8,7 @@ router.get("/",protectRoute, getFeedPosts);
 router.post("/create", protectRoute, createPosts);
 router.delete("/delete/:id", protectRoute, deletePosts);
 router.get("/:id", protectRoute, getPostById);
+router.get("/:id", protectRoute, createPosts);
 
 
 export default router;
