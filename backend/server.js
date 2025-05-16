@@ -7,6 +7,7 @@ import userRoutes from "./routes/user.route.js";
 import postRoutes from "./routes/post.route.js";
 import {connectdb} from "./lib/db.js";
 import cookieParser from "cookie-parser";
+import NotificationRoutes from "./models/notification.model.js";
 
 const PORT = process.env.PORT || 8000;
 const app = express();
@@ -17,6 +18,7 @@ app.use(cookieParser());
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/post", postRoutes);
+app.use("/api/v1/notification",NotificationRoutes);
 
 app.listen(PORT,()=>{
   console.log(`Server running :${PORT}`);

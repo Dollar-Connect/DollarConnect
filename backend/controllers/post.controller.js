@@ -137,11 +137,18 @@ export const likePost = async (req,res) =>{
 
       if(post.author.toString() !== userID.toString()){
         const newNotification = new Notification({
-          
-        })
+          recipient: post.author,
+          type: "like",
+          relatedUser:userID,
+          relatedPost:postID,
+        });
+        await newNotification.save();
       }
     }
-  } catch (error) {
-    
+    await post.save();
+    res.status(200).json(post);
+  } catch (error){
+    console.log("Error in likePost controller", error);
+    res.status(500).json("Error Internal");
   }
-}
+} 
