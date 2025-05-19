@@ -1,45 +1,61 @@
-import { MailtrapClient, sender } from "../lib/mailtrap.js";
-import { createCommentNotificationEmailTemplate, createWelcomeEmailTemplate } from "./emailTemplates.js";
+import { mailtrapClient, sender } from "../lib/mailtrap.js";
+import {
+	createCommentNotificationEmailTemplate,
+	createConnectionAcceptedEmailTemplate,
+	createWelcomeEmailTemplate,
+} from "./emailTemplates.js";
 
+export const sendWelcomeEmail = async (email, name, profileUrl) => {
+	const recipient = [{ email }];
 
-export const SendWelcomeEmail = async (email, name, ProfileUrl) => {
-  const recipient = [{ email }];
-  console.log("blahhhhh",sender);
+	try {
+		const response = await mailtrapClient.send({
+			from: sender,
+			to: recipient,
+			subject: "Welcome to UnLinked",
+			html: createWelcomeEmailTemplate(name, profileUrl),
+			category: "welcome",
+		});
 
-  try {
-    const response = await MailtrapClient.send({
-      from: sender,
-      to: recipient,
-      subject: "Welcome to UnLinked",
-      html: createWelcomeEmailTemplate(name, ProfileUrl),
-      category: "welcome",
-    });
-
-    console.log("Welcome Email sent successfully", response);
-  } catch (error) {
-    throw error;
-  }
+		console.log("Welcome Email sent succesffully", response);
+	} catch (error) {
+		throw error;
+	}
 };
 
 export const sendCommentNotificationEmail = async (
-  recipientEmail,
-  recipientName,
-  commentName,
-  postUrl,
-  commentContent
+	recipientEmail,
+	recipientName,
+	commenterName,
+	postUrl,
+	commentContent
 ) => {
-  const recipient = [{ email }];
+	const recipient = [{ email: recipientEmail }];
 
-  try {
-    const response = await MailtrapClient.send({
-      from: sender,
-      to: recipient,
-      subject: "New comment on your Post",
-      html:createCommentNotificationEmailTemplate(recipient, commenterName, postUrl, commentContent),
-      category:"comment_notification",
-    })
-    console.log("comment Notification email send successfully", response);
-  } catch (error) {
-    throw error
-  }
-}
+	try {
+		const response = await mailtrapClient.send({
+			from: sender,
+			to: recipient,
+			subject: "New Comment on Your Post",
+			html: createCommentNotificationEmailTemplate(recipientName, commenterName, postUrl, commentContent),
+			category: "comment_notification",
+		});
+		console.log("Comment Notification Email sent successfully", response);
+	} catch (error) {
+		throw error;
+	}
+};
+
+export const sendConnectionAcceptedEmail = async (senderEmail, senderName, recipientName, profileUrl) => {
+	const recipient = [{ email: senderEmail }];
+
+	try {
+		const response = await mailtrapClient.send({
+			from: sender,
+			to: recipient,
+			subject: `${recipientName} accepted your connection request`,
+			html: createConnectionAcceptedEmailTemplate(senderName, recipientName, profileUrl),
+			category: "connection_accepted",
+		});
+	} catch (error) {}
+};
