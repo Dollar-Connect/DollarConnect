@@ -45,7 +45,7 @@ export const signup =async(req,res)=>{
     const ProfileUrl= process.env.CLIENT_URL+"/Profile/"+user.username
 
     try {
-      await SendWelcomeEmail(user.email,user.name,ProfileUrl);
+      await sendWelcomeEmail(user.email,user.name,ProfileUrl);
     } catch (emailerror) {
       console.error("Error Sending Welcome Email",emailerror);
     }  
